@@ -136,3 +136,6 @@ This dashboard is built like a real product, even without a backend:
 Future improvements: Add backend, authentication, real APIs, or advanced filtering.
 
 Thanks for checking out Zorvyn Finance Dashboard!
+
+<img width="400" height="400" alt="image" src="https://github.com/user-attachments/assets/90e548ba-4a98-430e-9917-c72946dfecf2" />
+
