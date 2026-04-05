@@ -1,19 +1,20 @@
-Zorvyn Finance Dashboard
+# Zorvyn Finance Dashboard  
 
-Hi, I’m Alok 👋
+Hi, I’m **Alok** 👋  
 
-This is my submission for the Frontend Developer Intern assignment.
+This is my submission for the **Frontend Developer Intern** assignment.  
 
-I built Zorvyn as a modern, clean finance dashboard — something you’d actually enjoy using daily, not just a demo. The focus was on clarity, usability, and making financial data easy to understand at a glance, even without a backend.
+I built **Zorvyn** as a modern, clean finance dashboard — something you’d actually enjoy using daily, not just a demo. The focus was on **clarity, usability, and making financial data easy to understand at a glance**, even without a backend.  
 
-🌐 Live Demo : https://financeui-dashboard.vercel.app/
+# Live Demo  
 
-You can check out the project online here: Zorvyn Finance Dashboard on Vercel￼
+Check it out online: https://financeui-dashboard.vercel.app  
 
-=> Getting Started
+## 🚀 Getting Started  
 
-To run the project locally, follow these steps:
+To run the project locally:  
 
+```
 # Clone the repository
 git clone https://github.com/trooooperr/finance-dashboard-ui
 
@@ -25,12 +26,13 @@ npm install
 
 # Start the development server
 npm run dev
+```
 
 Then open your browser at: http://localhost:5173￼
 
 Note: All data is mock data stored locally in src/data, so the app works fully offline — no backend or database needed.
 
-=> Tech Stack
+# Tech Stack
 	•	React 18 — building modular UI components
 	•	Vite — fast, optimized development setup
 	•	Recharts — responsive and clean charts for data visualization
@@ -39,9 +41,9 @@ Note: All data is mock data stored locally in src/data, so the app works fully o
 	•	Plain CSS — complete control over styling
 	•	localStorage — persist mock data changes during your session
 
-=> What I Built.........
+# What I Built.........
 
-==> Dashboard
+# Dashboard
 
 A quick overview of your finances using mock data:
 	•	Summary Cards — Net balance, total income, and expenses
@@ -52,7 +54,7 @@ A quick overview of your finances using mock data:
 
 Goal: Understand your financial state within seconds, using only local/mock data.
 
-==> Transactions Page
+# Transactions Page
 
 Explore your mock transactions in detail:
 	•	Search instantly by name, amount, or category
@@ -72,7 +74,7 @@ Simulates real-world permission changes:
 
 This demonstrates how the UI adapts based on user roles — even without a backend.
 
-==> Insights
+# Insights
 
 Quick analysis based on mock data:
 	•	Top spending categories
@@ -84,17 +86,18 @@ Quick analysis based on mock data:
 
 Goal: Make financial data meaningful and readable, without needing a server.
 
-==> Design Approach
+# Design Approach
 	•	Dark fintech-style UI — modern, professional, and easy on the eyes
 	•	Typography: Sans-serif for general UI, monospace for numbers (financial clarity)
 	•	Colors: Green → positive, Red → negative, minimal distractions
 	•	Animations & transitions: Smooth and subtle for a better UX
 
-==> State Management
+# State Management
 	•	React Context + useMemo manages mock transactions centrally
 	•	Lightweight and simple — no need for Redux or other heavy libraries
 
-==> Project Structure
+# Project Structure
+```
 src/
 ├─ components/      → UI components
 ├─ context/         → Global state
@@ -108,17 +111,18 @@ public/
 
 package.json        → Project dependencies and scripts
 vite.config.js      → Vite configuration
+```
 
 Note: All “data” interactions (add/edit/delete) update localStorage, so changes persist locally but not on a server.
 
-==> Extra Features
+# Extra Features
 	•	Fully responsive design (desktop & mobile)
 	•	Dark/light mode toggle
 	•	Smooth transitions
 	•	Helpful empty states
 	•	Works completely offline with mock data
 
-==> Final Thoughts
+# Final Thoughts
 
 This dashboard is built like a real product, even without a backend:
 	•	Clean, modern UI
