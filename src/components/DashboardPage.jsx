@@ -6,10 +6,13 @@ import { ArrowRight, Shield, Eye, ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function DashboardPage() {
   const { role, transactions, setActiveSection } = useApp();
+  
+  // Recent 5 transactions 
   const recent = [...transactions].slice(0, 5);
-
+  // Mobile view 
   const [openId, setOpenId] = useState(null);
 
+  // Amount class function
   const amountClass = (type) => {
     if (type === 'income') return 'amount-positive';
     if (type === 'expense') return 'amount-negative';
@@ -24,7 +27,8 @@ export default function DashboardPage() {
 
   return (
     <div className="fade-in" style={{ padding: '16px 10px 16px 10px' }}>
-
+      
+      {/* Dashboard header section */}
       <div className="dashboard-header">
         <div>
           <div className="page-title">Overview</div>
@@ -38,13 +42,17 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* User role badge */}
         <div className={`role-badge ${role}`}>
           {role === 'admin' ? <Shield size={12} /> : <Eye size={12} />}
           {role === 'admin' ? 'Admin View' : 'Viewer Mode'}
         </div>
       </div>
+
+      {/* Summary Cards component */}
       <SummaryCards />
 
+      {/* Charts Grid */}
       <div className="charts-grid">
         <BalanceTrendChart />
         <SpendingBreakdownChart />
@@ -54,14 +62,19 @@ export default function DashboardPage() {
         <MonthlyBarChart />
       </div>
 
-<div className="txn-section">
+      {/* Recent Transactions Section */}
+      <div className="txn-section">
         <div className="section-header">
-          <div className="chart-title" style={{ fontWeight: 700, fontSize: 18, marginBottom: 4, marginTop: 8 }}>Recent Transactions</div>
-          <button  style={{ marginTop: 8 }} className="btn btn-ghost"
-            onClick={() => setActiveSection('transactions')}> View all <ArrowRight size={15} />
+          <div className="chart-title" style={{ fontWeight: 700, fontSize: 18, marginBottom: 4, marginTop: 8, marginLeft: 2 }}>
+            Recent Transactions
+          </div>
+          <button style={{ marginTop: 8, marginRight: 2 }} className="btn btn-ghost"
+            onClick={() => setActiveSection('transactions')}>
+            View all <ArrowRight size={15} />
           </button>
         </div>
 
+        {/* Desktop table view */}
         <div className="desktop-only txn-table-wrap">
           <div className="table-scroll">
             <table>
@@ -74,7 +87,6 @@ export default function DashboardPage() {
                   <th style={{ textAlign: 'right' }}>Amount</th>
                 </tr>
               </thead>
-
               <tbody>
                 {recent.map(txn => (
                   <tr key={txn.id}>
@@ -86,11 +98,13 @@ export default function DashboardPage() {
                       </span>
                     </td>
                     <td>
+                      {/* Type badge (income, expense, investment) */}
                       <span className={`badge badge-${txn.type}`}>
                         {txn.type === 'income' ? '▲' : txn.type === 'expense' ? '▼' : '●'} {txn.type}
                       </span>
                     </td>
                     <td style={{ textAlign: 'right' }}>
+                      {/* Amount with proper sign */}
                       <span className={amountClass(txn.type)}>
                         {txn.type === 'income' ? '+' : txn.type === 'expense' ? '-' : ''}
                         ₹{txn.amount.toLocaleString('en-IN')}
@@ -103,6 +117,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* Mobile card view */}
         <div className="mobile-only">
           {recent.map(txn => {
             const isOpen = openId === txn.id;
@@ -122,6 +137,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
+                {/* Expandable content */}
                 {isOpen && (
                   <div className="txn-body">
                     <div><strong>Date:</strong> {txn.date}</div>
@@ -135,6 +151,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
+      {/* Responsive for desktop and mobile */}
       <style>{`
         @media(max-width: 750px) {
           .desktop-only { display: none !important; }
@@ -144,8 +161,7 @@ export default function DashboardPage() {
           .desktop-only { display: block !important; }
           .mobile-only { display: none !important; }
         }
-      `}
-      </style>
+      `}</style>
     </div>
   );
 }

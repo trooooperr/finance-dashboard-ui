@@ -5,21 +5,24 @@ import { TrendingUp, TrendingDown, Zap, Target, ChevronDown, ChevronUp } from 'l
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LabelList } from 'recharts';
 
 export default function InsightsPage() {
-  const { transactions, summary, monthlyData, categoryBreakdown } = useApp();
-  const [expandedMonths, setExpandedMonths] = useState({});
+  const { transactions, summary, monthlyData, categoryBreakdown } = useApp(); 
+  const [expandedMonths, setExpandedMonths] = useState({}); 
 
-  const toggleMonth = (month) => setExpandedMonths(prev => ({ ...prev, [month]: !prev[month] }));
+  const toggleMonth = (month) => setExpandedMonths(prev => ({ ...prev, [month]: !prev[month] })); // Expand/collapse month
+
+  // Calculate insights only when dependencies change
   const insights = useMemo(() => {
-    const topCategory = categoryBreakdown[0] || null;
-    const months = monthlyData.length || 1;
-    const avgIncome = summary.income / months;
-    const avgExpense = summary.expenses / months;
-    const savingRate = summary.income > 0 ? ((summary.income - summary.expenses) / summary.income * 100) : 0;
+    const topCategory = categoryBreakdown[0] || null; 
+    const months = monthlyData.length || 1; 
+    const avgIncome = summary.income / months; 
+    const avgExpense = summary.expenses / months; 
+    const savingRate = summary.income > 0 ? ((summary.income - summary.expenses) / summary.income * 100) : 0; // Saving %
 
     const last = monthlyData[monthlyData.length - 1];
     const prev = monthlyData[monthlyData.length - 2];
-    const trend = last && prev ? ((last.expenses - prev.expenses) / prev.expenses * 100).toFixed(1) : 0;
+    const trend = last && prev ? ((last.expenses - prev.expenses) / prev.expenses * 100).toFixed(1) : 0; // Expense trend %
 
+    // Most frequent expense category
     const freq = {};
     transactions.filter(t => t.type === 'expense').forEach(t => { freq[t.category] = (freq[t.category] || 0) + 1 });
     const freqCategory = Object.entries(freq).sort((a, b) => b[1] - a[1])[0];
@@ -27,8 +30,9 @@ export default function InsightsPage() {
     return { topCategory, avgIncome, avgExpense, savingRate, trend, freqCategory };
   }, [transactions, summary, monthlyData, categoryBreakdown]);
 
+  // Custom tooltip for bar chart
   const CustomTooltip = ({ active, payload, label }) => {
-if (!active || !payload || payload.length === 0) return null;
+    if (!active || !payload || payload.length === 0) return null;
     return (
       <div style={{
         background: 'var(--bg2)',
@@ -44,11 +48,15 @@ if (!active || !payload || payload.length === 0) return null;
   };
 
   return (
-    <div className="fade-in" style={{ padding: '16px 16px 10px 10px' }}>
+    <div className="fade-in" style={{ padding: '16px 10px 10px 10px' }}>
+      {/* Page Title */}
       <div className="page-title">Insights</div>
       <div className="page-sub">Smart observations from your financial data</div>
 
+      {/* Top insights grid */}
       <div className="insight-grid" style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16}}>
+        
+        {/* Top Spending Category */}
         <div className="insight-card" style={{ flex: '1 1 200px' }}>
           <div className="insight-label"><Zap size={12} style={{ marginRight: 4 }} />Top Spending Category</div>
           <div className="insight-value" style={{ color: insights.topCategory ? CATEGORY_COLORS[insights.topCategory.name] : 'var(--text)' }}>
@@ -57,6 +65,7 @@ if (!active || !payload || payload.length === 0) return null;
           <div className="insight-sub" style={{ color: 'var(--red)' }}>
             ₹{insights.topCategory?.value?.toLocaleString('en-IN') || 0} spent
           </div>
+          {/* Progress bar */}
           <div className="progress-bar" style={{ background: 'var(--border)', borderRadius: 6, height: 6, marginTop: 6 }}>
             <div style={{
               width: insights.topCategory && summary.expenses
@@ -69,6 +78,7 @@ if (!active || !payload || payload.length === 0) return null;
           </div>
         </div>
 
+        {/* Savings Rate */}
         <div className="insight-card" style={{ flex: '1 1 200px' }}>
           <div className="insight-label"><Target size={12} style={{ marginRight: 4 }} />Savings Rate</div>
           <div className="insight-value" style={{ color: insights.savingRate >= 20 ? 'var(--accent)' : insights.savingRate >= 0 ? 'var(--amber)' : 'var(--red)' }}>
@@ -77,6 +87,7 @@ if (!active || !payload || payload.length === 0) return null;
           <div className="insight-sub" style={{ color: insights.savingRate >= 20 ? 'var(--accent)' : insights.savingRate >= 0 ? 'var(--amber)' : 'var(--red)' }}>
             {insights.savingRate >= 20 ? '✓ Healthy savings rate' : insights.savingRate >= 0 ? '⚠ Consider saving more' : '⚠ Spending exceeds income'}
           </div>
+          {/* Progress bar */}
           <div className="progress-bar" style={{ background: 'var(--border)', borderRadius: 6, height: 6, marginTop: 6 }}>
             <div style={{
               width: Math.max(0, Math.min(insights.savingRate, 100)) + '%',
@@ -87,12 +98,14 @@ if (!active || !payload || payload.length === 0) return null;
           </div>
         </div>
 
+        {/* Avg Monthly Income */}
         <div className="insight-card" style={{ flex: '1 1 200px' }}>
           <div className="insight-label"><TrendingUp size={12} style={{ marginRight: 4 }} />Avg Monthly Income</div>
           <div className="insight-value" style={{ color: 'var(--accent)' }}>₹{Math.round(insights.avgIncome).toLocaleString('en-IN')}</div>
           <div className="insight-sub" style={{ color: 'var(--accent)' }}>{monthlyData.length} months tracked</div>
         </div>
 
+        {/* Expense Trend */}
         <div className="insight-card" style={{ flex: '1 1 200px' }}>
           <div className="insight-label"><TrendingDown size={12} style={{ marginRight: 4 }} />Expense Trend</div>
           <div className="insight-value" style={{ color: Number(insights.trend) > 0 ? 'var(--red)' : 'var(--accent)' }}>
@@ -104,161 +117,134 @@ if (!active || !payload || payload.length === 0) return null;
         </div>
       </div>
 
-<div
-  className="card"
-  style={{
-    marginBottom: 16,
-    padding: 16,
-    borderRadius: 16,
-    background: 'var(--bg2)',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
-  }}
->
-  <div className="chart-title" style={{ fontWeight: 700, fontSize: 18, marginBottom: 4 }}>
-    Category Spending Analysis
-  </div>
-  <div className="chart-sub" style={{ fontSize: 13, color: 'var(--text2)', marginBottom: 12 }}>
-    Breakdown of all expenses by category
-  </div>
-
-  <ResponsiveContainer
-    width="100%"
-    height={Math.min(Math.max(categoryBreakdown.length * 35, 220), 400)}
-  >
-    <BarChart
-      data={categoryBreakdown}
-      layout="vertical"
-      margin={{
-        top: 12,
-        right: 50,
-        left: window.innerWidth <= 767 ? 0 : 20,
-        bottom: 12
-      }}
-      barGap={8}
-      barSize={16}
-    >
-      <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" horizontal={false} />
-      <XAxis type="number" hide />
-      {window.innerWidth > 767 && (
-        <YAxis
-          type="category"
-          dataKey="name"
-          tick={{
-            fill: 'var(--text2)',
-            fontSize: 12,
-            fontWeight: 600
-          }}
-          axisLine={false}
-          tickLine={false}
-          width={90}
-        />
-      )}
-
-{window.innerWidth > 10 && (
-  <Tooltip
-    content={<CustomTooltip />}
-    cursor={{ fill: 'transparent' }}
-  />
-)}
-
-      <Bar
-        dataKey="value"
-        radius={[0, 12, 12, 0]}
-        isAnimationActive
-        animationDuration={1000}
-        onClick={() => {}}
-        activeBar={{
-    fillOpacity: 0.8
-  }}
+      {/* Category Spending Bar Chart */}
+      <div
+        className="card"
+        style={{
+          marginBottom: 16,
+          padding: 16,
+          borderRadius: 16,
+          background: 'var(--bg2)',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+        }}
       >
-        
-        {categoryBreakdown.map((entry, i) => (
-          <Cell key={i} fill={entry.color || CATEGORY_COLORS[entry.name] || '#888'} />
-        ))}
+        <div className="chart-title" style={{ fontWeight: 700, fontSize: 18, marginBottom: 4 }}>
+          Category Spending Analysis
+        </div>
+        <div className="chart-sub" style={{ fontSize: 13, color: 'var(--text2)', marginBottom: 12 }}>
+          Breakdown of all expenses by category
+        </div>
 
-        {window.innerWidth <= 767 && (
-<LabelList
-  dataKey="name"
-  content={(props) => {
-    const { x, y, width, height, value, index } = props;
-const amount = categoryBreakdown[index]?.value || 0;
-
-    const screenWidth = window.innerWidth;
-    const estimatedTextWidth = value.length * 7;
-
-    const rawX = x + width + 6;
-    const maxX = screenWidth - estimatedTextWidth - 20;
-
-    const finalX = Math.min(rawX, maxX);
-    const willOverflow = rawX > maxX;
-
-    return (
-    <g style={{ pointerEvents: 'none' }}>
-      
-        
-        {willOverflow && (
-          <rect
-            x={finalX - 4}
-            y={y + height / 2 - 10}
-            width={estimatedTextWidth + 8}
-            height={18}
-            fill="var(--bg2)"
-            rx={4}
-            style={{ pointerEvents: 'none' }}  
-          />
-        )}
-
-        <text
-          x={willOverflow ? finalX + estimatedTextWidth : finalX}
-          y={y + height / 2 + 4}
-          textAnchor={willOverflow ? "end" : "start"}
-          fill="var(--text)"
-          fontSize={12}
-          fontWeight={600}
-          style={{ pointerEvents: 'none' }}  
+        <ResponsiveContainer
+          width="100%"
+          height={Math.min(Math.max(categoryBreakdown.length * 35, 220), 400)} // Dynamic height based on categories
         >
-          {value}
-        </text>
+          <BarChart
+            data={categoryBreakdown}
+            layout="vertical"
+            margin={{
+              top: 12,
+              right: 50,
+              left: window.innerWidth <= 767 ? 0 : 20,
+              bottom: 12
+            }}
+            barGap={8}
+            barSize={16}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" horizontal={false} />
+            <XAxis type="number" hide />
+            {window.innerWidth > 767 && (
+              <YAxis
+                type="category"
+                dataKey="name"
+                tick={{
+                  fill: 'var(--text2)',
+                  fontSize: 12,
+                  fontWeight: 600
+                }}
+                axisLine={false}
+                tickLine={false}
+                width={90}
+              />
+            )}
 
-      </g>
-    );
-  }}
-/>        )}
-      </Bar>
-    </BarChart>
-  </ResponsiveContainer>
+            {window.innerWidth > 10 && (
+              <Tooltip
+                content={<CustomTooltip />}
+                cursor={{ fill: 'transparent' }} // Transparent hover cursor
+              />
+            )}
 
+            {/* Bars with colors */}
+            <Bar dataKey="value" radius={[0, 12, 12, 0]}>
+              {categoryBreakdown.map((entry, i) => (
+                <Cell key={i} fill={entry.color || CATEGORY_COLORS[entry.name] || '#888'} />
+              ))}
 
-  <div
-    style={{
-      marginTop: 12,
-      fontSize: 12,
-      color: 'var(--text2)',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 4
-    }}
-  >
-    <span>
-      Total Expenses:{' '}
-      <strong>
-        ₹{categoryBreakdown.reduce((sum, c) => sum + c.value, 0).toLocaleString('en-IN')}
-      </strong>
-    </span>
-    <span>
-      Top Category:{' '}
-      <strong style={{ color: categoryBreakdown[0]?.color }}>
-        {categoryBreakdown[0]?.name || '—'}
-      </strong>
-    </span>
-  </div>
-</div>
+              {/* Labels for mobile */}
+              {window.innerWidth <= 767 && (
+                <LabelList
+                  dataKey="name"
+                  content={(props) => {
+                    const { x, y, width, height, value, index } = props;
+                    const amount = categoryBreakdown[index]?.value || 0;
+                    const screenWidth = window.innerWidth;
+                    const estimatedTextWidth = value.length * 7;
+                    const rawX = x + width + 6;
+                    const maxX = screenWidth - estimatedTextWidth - 20;
+                    const finalX = Math.min(rawX, maxX);
+                    const willOverflow = rawX > maxX;
 
+                    return (
+                      <g style={{ pointerEvents: 'none' }}>
+                        {willOverflow && (
+                          <rect
+                            x={finalX - 4}
+                            y={y + height / 2 - 10}
+                            width={estimatedTextWidth + 8}
+                            height={18}
+                            fill="var(--bg2)"
+                            rx={4}
+                            style={{ pointerEvents: 'none' }}
+                          />
+                        )}
+                        <text
+                          x={willOverflow ? finalX + estimatedTextWidth : finalX}
+                          y={y + height / 2 + 4}
+                          textAnchor={willOverflow ? "end" : "start"}
+                          fill="var(--text)"
+                          fontSize={12}
+                          fontWeight={600}
+                          style={{ pointerEvents: 'none' }}
+                        >
+                          {value}
+                        </text>
+                      </g>
+                    );
+                  }}
+                />
+              )}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
 
-      <div className="card" style={{ padding: '16px 16px 16px 16px', borderRadius: 16, background: 'var(--bg2)' }}>
+        {/* Summary below chart */}
+        <div style={{ marginTop: 12, fontSize: 12, color: 'var(--text2)', display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <span>
+            Total Expenses: <strong>₹{categoryBreakdown.reduce((sum, c) => sum + c.value, 0).toLocaleString('en-IN')}</strong>
+          </span>
+          <span>
+            Top Category: <strong style={{ color: categoryBreakdown[0]?.color }}>{categoryBreakdown[0]?.name || '—'}</strong>
+          </span>
+        </div>
+      </div>
+
+      {/* Monthly Comparison Table */}
+      <div className="card" style={{ padding: '16px', borderRadius: 16, background: 'var(--bg2)' }}>
         <div className="chart-title">Monthly Comparison</div>
         <div className="chart-sub">Income vs expenses month over month</div>
 
+        {/* Desktop table */}
         <div className="desktop-only" style={{ overflowX: 'auto' }}>
           <table style={{ minWidth: 400, width: '100%', borderCollapse: 'collapse' }}>
             <thead>
@@ -288,6 +274,7 @@ const amount = categoryBreakdown[index]?.value || 0;
           </table>
         </div>
 
+        {/* Mobile expandable view */}
         <div className="mobile-only" style={{ display: 'none' }}>
           {monthlyData.map((m, i) => {
             const net = m.income - m.expenses;
@@ -314,6 +301,7 @@ const amount = categoryBreakdown[index]?.value || 0;
         </div>
       </div>
 
+      {/* Mobile/Desktop media queries */}
       <style>{`
         @media(max-width: 750px) {
           .desktop-only { display: none !important; }

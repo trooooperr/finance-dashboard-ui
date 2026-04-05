@@ -1,8 +1,6 @@
 export const CATEGORIES = [
   'Housing', 'Food & Dining', 'Transport', 'Shopping', 'Healthcare',
-  'Entertainment', 'Utilities', 'Education', 'Freelance', 'Salary',
-  'Investment', 'Insurance'
-];
+  'Entertainment', 'Education','Investment', 'Insurance'];
 
 export const CATEGORY_COLORS = {
   'Housing':'#E8593C',
@@ -13,101 +11,82 @@ export const CATEGORY_COLORS = {
   'Entertainment':'#3B82F6',
   'Utilities':'#10B981',
   'Education':'#F59E0B',
-  'Freelance':'#06B6D4',
   'Salary':'#22C55E',
   'Investment':'#8B5CF6',
   'Insurance':'#6B7280',
 };
 
-function generateId() {
-  return Math.random().toString(36).substr(2, 9);
-}
+export const INITIAL_TRANSACTIONS = [
+  // APR 2026 
+  { id:'t1', date:'2026-04-02', description:'Monthly Salary', category:'Salary', type:'income', amount:50000, month:'Apr', year:2026 },
+  { id:'t2', date:'2026-04-04', description:'House Rent', category:'Housing', type:'expense', amount:12000, month:'Apr', year:2026 },
+  { id:'t3', date:'2026-04-06', description:'Amazon Purchase', category:'Shopping', type:'expense', amount:3500, month:'Apr', year:2026 },
+  { id:'t4', date:'2026-04-08', description:'Mutual Fund', category:'Investment', type:'income', amount:2500, month:'Apr', year:2026 },
 
-function randomBetween(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+  // MAR 2026 
+  { id:'t5', date:'2026-03-01', description:'Monthly Salary', category:'Salary', type:'income', amount:50000, month:'Mar', year:2026 },
+  { id:'t6', date:'2026-03-03', description:'Groceries', category:'Food & Dining', type:'expense', amount:1800, month:'Mar', year:2026 },
+  { id:'t7', date:'2026-03-05', description:'Netflix', category:'Entertainment', type:'expense', amount:400, month:'Mar', year:2026 },
 
-const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-export function generateTransactions() {
-  const txns = [];
-  const now = new Date(2026, 2, 20); 
+  // FEB 2026 
+  { id:'t9', date:'2026-02-02', description:'Monthly Salary', category:'Salary', type:'income', amount:50000, month:'Feb', year:2026 },
+  { id:'t10', date:'2026-02-04', description:'House Renovation', category:'Housing', type:'expense', amount:60000, month:'Feb', year:2026 },
+  { id:'t11', date:'2026-02-06', description:'Uber Ride', category:'Transport', type:'expense', amount:2000, month:'Feb', year:2026 },
+  { id:'t12', date:'2026-02-08', description:'Doctor Visit', category:'Healthcare', type:'expense', amount:1500, month:'Feb', year:2026 },
 
-  const expenseTemplates = [
-    { desc: 'Monthly Rent', category: 'Housing', min: 12000, max: 18000 },
-    { desc: 'Zomato Order', category: 'Food & Dining', min: 150, max: 600 },
-    { desc: 'Swiggy Order', category: 'Food & Dining', min: 120, max: 450 },
-    { desc: 'Uber Ride', category: 'Transport', min: 80, max: 400 },
-    { desc: 'Ola Cab', category: 'Transport', min: 60, max: 350 },
-    { desc: 'Amazon Purchase', category: 'Shopping', min: 300, max: 3000 },
-    { desc: 'Flipkart Order', category: 'Shopping', min: 200, max: 2500 },
-    { desc: 'Doctor Consultation', category: 'Healthcare', min: 500, max: 1500 },
-    { desc: 'Pharmacy', category: 'Healthcare', min: 100, max: 800 },
-    { desc: 'Netflix Subscription', category: 'Entertainment', min: 649, max: 649 },
-    { desc: 'Movie Tickets', category: 'Entertainment', min: 300, max: 700 },
-    { desc: 'Electricity Bill', category: 'Utilities', min: 800, max: 2200 },
-    { desc: 'Internet Bill', category: 'Utilities', min: 500, max: 900 },
-    { desc: 'Online Course', category: 'Education', min: 500, max: 5000 },
-    { desc: 'Term Insurance', category: 'Insurance', min: 1200, max: 3000 },
-  ];
+  // JAN 2026 
+  { id:'t13', date:'2026-01-03', description:'Monthly Salary', category:'Salary', type:'income', amount:48000, month:'Jan', year:2026 },
+  { id:'t14', date:'2026-01-05', description:'Groceries', category:'Food & Dining', type:'expense', amount:1800, month:'Jan', year:2026 },
+  { id:'t15', date:'2026-01-07', description:'House Rent', category:'Housing', type:'expense', amount:12000, month:'Jan', year:2026 },
+  { id:'t16', date:'2026-01-10', description:'Amazon Purchase', category:'Shopping', type:'expense', amount:2500, month:'Jan', year:2026 },
 
-  const incomeTemplates = [
-    { desc: 'Monthly Salary', category: 'Salary', min: 45000, max: 55000 },
-    { desc: 'Freelance Project', category: 'Freelance', min: 5000, max: 20000 },
-    { desc: 'Dividend Income', category: 'Investment', min: 500, max: 3000 },
-    { desc: 'Mutual Fund Returns', category: 'Investment', min: 1000, max: 5000 },
-    { desc: 'Bonus', category: 'Salary', min: 5000, max: 15000 },
-  ];
+  // DEC 2025 
+  { id:'t17', date:'2025-12-02', description:'Monthly Salary', category:'Salary', type:'income', amount:50000, month:'Dec', year:2025 },
+  { id:'t18', date:'2025-12-04', description:'Vacation Trip', category:'Entertainment', type:'expense', amount:15000, month:'Dec', year:2025 },
+  { id:'t19', date:'2025-12-06', description:'Car Repair', category:'Transport', type:'expense', amount:15000, month:'Dec', year:2025 },
 
-const totalMonths = 12;
-const current = new Date(); 
+  // NOV 2025 
+  { id:'t20', date:'2025-11-01', description:'Monthly Salary', category:'Salary', type:'income', amount:50000, month:'Nov', year:2025 },
+  { id:'t21', date:'2025-11-03', description:'House Rent', category:'Housing', type:'expense', amount:12000, month:'Nov', year:2025 },
+  { id:'t22', date:'2025-11-05', description:'Amazon Purchase', category:'Shopping', type:'expense', amount:2500, month:'Nov', year:2025 },
 
-for (let m = 0; m < totalMonths; m++) {
-  const monthDate = new Date(
-    current.getFullYear(),
-    current.getMonth() - (totalMonths - 1 - m),
-    1
-  );
-    incomeTemplates.forEach((tmpl, i) => {
-      if (Math.random() > 0.3) {
-        const day = randomBetween(1, 28);
-        const date = new Date(monthDate.getFullYear(), monthDate.getMonth(), day);
-        txns.push({
-          id: generateId(),
-          date: date.toISOString().split('T')[0],
-          description: tmpl.desc,
-          category: tmpl.category,
-          type: 'income',
-          amount: randomBetween(tmpl.min, tmpl.max),
-          month: months[monthDate.getMonth()],
-          year: monthDate.getFullYear(),
-        });
-      }
-    });
+  // OCT 2025 
+  { id:'t23', date:'2025-10-02', description:'Monthly Salary', category:'Salary', type:'income', amount:50000, month:'Oct', year:2025 },
+  { id:'t24', date:'2025-10-04', description:'Groceries', category:'Food & Dining', type:'expense', amount:1800, month:'Oct', year:2025 },
+  { id:'t25', date:'2025-10-06', description:'Online Course', category:'Education', type:'expense', amount:2500, month:'Oct', year:2025 },
 
-    const numExpenses = randomBetween(10, 18);
-    for (let e = 0; e < numExpenses; e++) {
-      const tmpl = expenseTemplates[randomBetween(0, expenseTemplates.length - 1)];
-      const day = randomBetween(1, 28);
-      const date = new Date(monthDate.getFullYear(), monthDate.getMonth(), day);
-      txns.push({
-        id: generateId(),
-        date: date.toISOString().split('T')[0],
-        description: tmpl.desc,
-        category: tmpl.category,
-        type: 'expense',
-        amount: randomBetween(tmpl.min, tmpl.max),
-        month: months[monthDate.getMonth()],
-        year: monthDate.getFullYear(),
-      });
-    }
-  }
+  // SEP 2025 
+  { id:'t26', date:'2025-09-01', description:'Monthly Salary', category:'Salary', type:'income', amount:50000, month:'Sep', year:2025 },
+  { id:'t27', date:'2025-09-03', description:'House Renovation', category:'Housing', type:'expense', amount:60000, month:'Sep', year:2025 },
+  { id:'t28', date:'2025-09-05', description:'Car Repair', category:'Transport', type:'expense', amount:15000, month:'Sep', year:2025 },
 
-  return txns.sort((a, b) => new Date(b.date) - new Date(a.date));
-}
+  // AUG 2025 
+  { id:'t29', date:'2025-08-02', description:'Monthly Salary', category:'Salary', type:'income', amount:50000, month:'Aug', year:2025 },
+  { id:'t30', date:'2025-08-04', description:'Groceries', category:'Food & Dining', type:'expense', amount:1800, month:'Aug', year:2025 },
+  { id:'t31', date:'2025-08-06', description:'Doctor Visit', category:'Healthcare', type:'expense', amount:1200, month:'Aug', year:2025 },
 
-export const INITIAL_TRANSACTIONS = generateTransactions();
+  // JUL 2025 
+  { id:'t32', date:'2025-07-01', description:'Monthly Salary', category:'Salary', type:'income', amount:50000, month:'Jul', year:2025 },
+  { id:'t33', date:'2025-07-03', description:'House Rent', category:'Housing', type:'expense', amount:12000, month:'Jul', year:2025 },
+  { id:'t34', date:'2025-07-05', description:'Amazon Purchase', category:'Shopping', type:'expense', amount:2500, month:'Jul', year:2025 },
 
+
+  // JUN 2025 
+  { id:'t36', date:'2025-06-02', description:'Monthly Salary', category:'Salary', type:'income', amount:50000, month:'Jun', year:2025 },
+  { id:'t37', date:'2025-06-04', description:'Vacation Trip', category:'Entertainment', type:'expense', amount:35000, month:'Jun', year:2025 },
+  { id:'t38', date:'2025-06-06', description:'Car Repair', category:'Transport', type:'expense', amount:25000, month:'Jun', year:2025 },
+  { id:'t44', date:'2025-06-06', description:'L.I.C', category:'Investment', type:'expense', amount:3500, month:'Jun', year:2025 },
+
+  // MAY 2025 
+  { id:'t39', date:'2025-05-03', description:'Monthly Salary', category:'Salary', type:'income', amount:48000, month:'May', year:2025 },
+  { id:'t40', date:'2025-05-05', description:'Groceries', category:'Food & Dining', type:'expense', amount:1800, month:'May', year:2025 },
+  { id:'t41', date:'2025-05-07', description:'House Rent', category:'Housing', type:'expense', amount:12000, month:'May', year:2025 },
+  { id:'t42', date:'2025-05-10', description:'Amazon Purchase', category:'Shopping', type:'expense', amount:2500, month:'May', year:2025 },
+  { id:'t43', date:'2025-05-12', description:'Car Insurance', category:'Insurance', type:'expense', amount:1500, month:'May', year:2025 },
+];
+
+// --- Aggregation functions ---
 export function getMonthlyData(transactions) {
   const map = {};
   transactions.forEach(t => {
@@ -116,16 +95,25 @@ export function getMonthlyData(transactions) {
     if (t.type === 'income') map[key].income += t.amount;
     else map[key].expenses += t.amount;
   });
+  // Sort descending: latest month first
   return Object.values(map)
     .map(m => ({ ...m, balance: m.income - m.expenses }))
-    .reverse();
+    .sort((a, b) => {
+      const dateA = new Date(`${a.name.split(' ')[1]}-${a.name.split(' ')[0]}-01`);
+      const dateB = new Date(`${b.name.split(' ')[1]}-${b.name.split(' ')[0]}-01`);
+      return dateB - dateA;
+    });
 }
 
 export function getCategoryBreakdown(transactions) {
   const expenseMap = {};
+  // Initialize all categories with 0
+  CATEGORIES.forEach(cat => expenseMap[cat] = 0);
+
   transactions.filter(t => t.type === 'expense').forEach(t => {
-    expenseMap[t.category] = (expenseMap[t.category] || 0) + t.amount;
+    expenseMap[t.category] += t.amount;
   });
+
   return Object.entries(expenseMap)
     .map(([name, value]) => ({ name, value, color: CATEGORY_COLORS[name] || '#888' }))
     .sort((a, b) => b.value - a.value);

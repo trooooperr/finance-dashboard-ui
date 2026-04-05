@@ -2,14 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { Wallet, TrendingUp, TrendingDown } from 'lucide-react';
 
+// Amount ko readable format me convert karne ke liye (₹, K, L)
 function fmt(n) {
   if (n >= 100000) return '₹' + (n / 100000).toFixed(2) + 'L';
   if (n >= 1000) return '₹' + (n / 1000).toFixed(1) + 'K';
   return '₹' + n.toLocaleString('en-IN');
 }
+
+// Ek single summary card component
 function SummaryCard({ label, amount, sub, icon: Icon, type, useSubColor = false, isMobile }) {
-  const isProfit = type === 'profit';
-  const color = isProfit ? 'var(--accent)' : 'var(--red)';
+  const isProfit = type === 'profit'; // Profit or Loss check
+  const color = isProfit ? 'var(--accent)' : 'var(--red)'; // Color based on type
 
   return (
     <div
@@ -25,8 +28,9 @@ function SummaryCard({ label, amount, sub, icon: Icon, type, useSubColor = false
         background: 'var(--bg2)',
         border: '1px solid var(--border)',
         boxShadow: 'var(--shadow)',
-      }}>
-
+      }}
+    >
+      {/* Left side: Label, Amount, Subtext */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         <span style={{
           fontSize: isMobile ? 10 : 11,
@@ -44,7 +48,7 @@ function SummaryCard({ label, amount, sub, icon: Icon, type, useSubColor = false
           color,
           fontFamily: 'var(--mono)',
         }}>
-          {fmt(amount)}
+          {fmt(amount)} {/* Formatted amount */}
         </span>
 
         <span style={{
@@ -52,10 +56,11 @@ function SummaryCard({ label, amount, sub, icon: Icon, type, useSubColor = false
           color: useSubColor ? color : 'var(--text2)',
           fontFamily: 'var(--mono)',
         }}>
-          {sub}
+          {sub} {/* (Profit/Loss or transactions count) */}
         </span>
       </div>
 
+      {/* Right side: Icon */}
       <div style={{
         width: isMobile ? 32 : 36,
         height: isMobile ? 32 : 36,
@@ -67,27 +72,30 @@ function SummaryCard({ label, amount, sub, icon: Icon, type, useSubColor = false
         border: '1px solid var(--border)',
         color,
       }}>
-        <Icon size={isMobile ? 16 : 18} />
+        <Icon size={isMobile ? 16 : 18} /> {/* Card icon */}
       </div>
     </div>
   );
 }
 
+// SummaryCards main component
 export default function SummaryCards() {
-  const { summary, transactions } = useApp();
-  const [width, setWidth] = useState(window.innerWidth);
+  const { summary, transactions } = useApp(); // Global state
+  const [width, setWidth] = useState(window.innerWidth); // Window width for responsiveness
 
+  // Resize listener
   useEffect(() => {
     const resize = () => setWidth(window.innerWidth);
     window.addEventListener('resize', resize);
     return () => window.removeEventListener('resize', resize);
   }, []);
 
-  const isMobile = width < 600;
+  const isMobile = width < 600; // Mobile breakpoint
   const isTablet = width >= 650 && width < 750;
   const isLaptop = width > 750 && width < 1024;
   const isTabletLand = width >= 1024 && width < 1400;
 
+  // Grid columns based on screen size
   const gridColumns = isMobile
     ? '1fr'
     : isTablet
@@ -98,11 +106,11 @@ export default function SummaryCards() {
     ? 'repeat(3, 1fr)'
     : 'repeat(3, 1fr)';
 
-  const gap = isMobile ? 8 : isTablet ? 8 : isTabletLand ? 8 : 8;
+  const gap = isMobile ? 8 : 8; // Gap between cards
 
-  const incomeCount = transactions.filter((t) => t.type === 'income').length;
-  const expenseCount = transactions.filter((t) => t.type === 'expense').length;
-  const isPositive = summary.balance >= 0;
+  const incomeCount = transactions.filter((t) => t.type === 'income').length; // Income transaction count
+  const expenseCount = transactions.filter((t) => t.type === 'expense').length; // Expense transaction count
+  const isPositive = summary.balance >= 0; // Balance Profit/Loss check
 
   return (
     <div
@@ -113,6 +121,7 @@ export default function SummaryCards() {
         gap: gap,
       }}
     >
+      {/* Net Balance Card */}
       <SummaryCard
         label="Net Balance"
         amount={Math.abs(summary.balance)}
@@ -123,6 +132,7 @@ export default function SummaryCards() {
         isMobile={isMobile}
       />
 
+      {/* Total Income Card */}
       <SummaryCard
         label="Total Income"
         amount={summary.income}
@@ -132,6 +142,7 @@ export default function SummaryCards() {
         isMobile={isMobile}
       />
 
+      {/* Total Expenses Card */}
       <SummaryCard
         label="Total Expenses"
         amount={summary.expenses}

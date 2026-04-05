@@ -96,8 +96,8 @@ export function SpendingBreakdownChart() {
             <PieChart>
               <Pie
                 data={top5}
-                cx={isMobile ? '50%' : isTablet ? '48%' : isTabletLand ? '43%' : '50%'}
-                cy={isMobile ? '48%' : isTablet ? '48%' : isTabletLand ? '52%' : '50%'}
+                cx={isMobile ? '45%' : isTablet ? '48%' : isTabletLand ? '41%' : '50%'}
+                cy={isMobile ? '48%' : isTablet ? '50%' : isTabletLand ? '52%' : '50%'}
                 innerRadius={pieInnerRadius}
                 outerRadius={pieOuterRadius}
                 paddingAngle={3}
@@ -187,13 +187,13 @@ export function BalanceTrendChart() {
 
   return (
     
-    <motion.div className="card" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ position: 'relative', overflow: 'hidden', paddingBottom: 20,}}>
+    <motion.div className="card" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ position: 'relative', overflow: 'hidden', paddingBottom: 20, paddingLeft: 20,}}>
       <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 10% -20%, rgba(0,229,160,0.08), transparent 40%), radial-gradient(circle at 90% 120%, rgba(255,77,106,0.08), transparent 40%)', pointerEvents: 'none' }} />
       <div className="chart-title">Balance Trend</div>
       <div className="chart-sub">Monthly income vs Expenses</div>
 
       <ResponsiveContainer width="100%" height={260} margin={{ top: 0, right: 10, bottom: 0, left: 0 }}>
-        <AreaChart data={monthlyData} margin={{ top: 20, right: 0, left: -12, bottom: windowWidth < 750 ? 2 : 0 }}>
+        <AreaChart data={monthlyData} margin={{ top: 20, right: 4, left: -12, bottom: windowWidth < 750 ? 2 : 0 }}>
           <defs>
             <linearGradient id="incomeGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#00E5A0" stopOpacity={0.5}/>
@@ -207,17 +207,17 @@ export function BalanceTrendChart() {
 
           <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" vertical={false} />
           <XAxis
-  dataKey="name"
-  interval={0}
-  tick={({ x, y, payload }) => {
-    const [month, year] = payload.value.split(' ');
+            dataKey="name"
+            interval={0}
+            tick={({ x, y, payload }) => {
+            const [month, year] = payload.value.split(' ');
 
     if (windowWidth < 700) {
       return (
         <text
           x={x}
           y={y}  
-          transform={`rotate(-45, ${x}, ${y})`}
+          transform={`rotate(-35, ${x}, ${y})`}
           textAnchor="end"
           dominantBaseline="middle" 
           fontSize={10}
@@ -248,7 +248,7 @@ export function BalanceTrendChart() {
           transform={`rotate(-20, ${x}, ${y})`}
           textAnchor="end"
           dominantBaseline="middle"
-          fontSize={11}
+          fontSize={10}
           fill="var(--text2)"
         >
           <tspan x={x} dy="0">{month}</tspan>
@@ -301,15 +301,22 @@ export function MonthlyBarChart() {
   const isMobile = windowWidth < 700;
   const barsToShow = isMobile ? 8 : 12;
   
-  const monthsToShow = React.useMemo(() => {
-    const monthsOrder = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    const sorted = [...monthlyData].sort((a, b) => {
-      const [monthA, yearA] = a.name.split(' ');
-      const [monthB, yearB] = b.name.split(' ');
-      return new Date(yearA, monthsOrder.indexOf(monthA)) - new Date(yearB, monthsOrder.indexOf(monthB));
-    });
-    return sorted.slice(-barsToShow);
-  }, [monthlyData, barsToShow]);
+const monthsToShow = React.useMemo(() => {
+  const monthsOrder = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  // Sort all months newest → oldest
+  const sorted = [...monthlyData].sort((a, b) => {
+    const [monthA, yearA] = a.name.split(' ');
+    const [monthB, yearB] = b.name.split(' ');
+
+    // Compare years first, then months
+    if (+yearB !== +yearA) return +yearB - +yearA;
+    return monthsOrder.indexOf(monthB) - monthsOrder.indexOf(monthA);
+  });
+
+  // Take the last 12 months 
+  return sorted.slice(0, 12);
+}, [monthlyData]);
 
   const BalanceTooltip = ({ active, payload }) => {
     if (!active || !payload?.length) return null;
@@ -354,7 +361,7 @@ export function MonthlyBarChart() {
           data={monthsToShow}
           syncId="monthlyCharts"
           barCategoryGap={isMobile ? '10%' : '15%'}
-          margin={{ top: 10, right: 10, left: -10, bottom: 15 }}>
+          margin={{ top: -10, right: 10, left: -10, bottom: 15 }}>
           <defs>
             <linearGradient id="profitGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#00E5A0" stopOpacity={1} />

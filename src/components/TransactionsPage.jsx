@@ -4,6 +4,7 @@ import { CATEGORIES, CATEGORY_COLORS } from '../data/mockData';
 import TransactionModal from './TransactionModal';
 import { Plus, Search, Pencil, Trash2, Download, ChevronDown, ChevronUp } from 'lucide-react';
 
+// Export CSV
 function exportCSV(transactions) {
   const header = 'Date,Description,Category,Type,Amount\n';
   const rows = transactions.map(t =>
@@ -12,7 +13,9 @@ function exportCSV(transactions) {
   const blob = new Blob([header + rows], { type: 'text/csv' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = 'zorvyn_transactions.csv'; a.click();
+  a.href = url;
+  a.download = 'zorvyn_transactions.csv';
+  a.click();
   URL.revokeObjectURL(url);
 }
 
@@ -35,7 +38,7 @@ export default function TransactionsPage() {
   const toggleExpand = (id) => { setExpandedCards(prev => ({ ...prev, [id]: !prev[id] })); }
 
   return (
-<div className="fade-in" style={{ padding: '16px 10px 16px 10px' }}>
+    <div className="fade-in" style={{ padding: 16 }}>
       <div className="page-title" style={{ fontSize: 24, fontWeight: 700 }}>Transactions</div>
       <div className="page-sub" style={{ marginBottom: 16, fontSize: 13, color: 'var(--text2)' }}>
         {filteredTransactions.length} records found
@@ -62,18 +65,18 @@ export default function TransactionsPage() {
           />
         </div>
 
-        <select value={filterType} onChange={e => setFilterType(e.target.value)} className="filter-select" style={{ flex: '1 1 48%', minWidth: 100 }}>
+        <select value={filterType} onChange={e => setFilterType(e.target.value)} style={{ flex: '1 1 48%', minWidth: 100 }}>
           <option value="all">All Types</option>
           <option value="income">Income</option>
           <option value="expense">Expense</option>
         </select>
 
-        <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} className="filter-select" style={{ flex: '1 1 48%', minWidth: 100 }}>
+        <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} style={{ flex: '1 1 48%', minWidth: 100 }}>
           <option value="all">All Categories</option>
           {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
         </select>
 
-        <select value={sortBy} onChange={e => setSortBy(e.target.value)} className="filter-select" style={{ flex: '1 1 48%', minWidth: 100 }}>
+        <select value={sortBy} onChange={e => setSortBy(e.target.value)} style={{ flex: '1 1 48%', minWidth: 100 }}>
           <option value="date_desc">Date ↓</option>
           <option value="date_asc">Date ↑</option>
           <option value="amount_desc">Amount ↓</option>
@@ -112,7 +115,7 @@ export default function TransactionsPage() {
                 cursor: 'pointer',
                 boxShadow: 'var(--shadow)',
               }}>
-                <td style={{ fontFamily: 'var(--mono)',fontWeight: 500, fontSize: 12, color: 'var(--text2)', padding: '12px 16px', whiteSpace: 'nowrap' }}>{txn.date}</td>
+                <td style={{ fontFamily: 'var(--mono)', fontWeight: 500, fontSize: 12, color: 'var(--text2)', padding: '12px 16px', whiteSpace: 'nowrap' }}>{txn.date}</td>
                 <td style={{ fontSize: 13, fontWeight: 700, padding: '12px 16px' }}>{txn.description}</td>
                 <td style={{ padding: '12px 16px' }}>
                   <span style={{
@@ -128,11 +131,7 @@ export default function TransactionsPage() {
                   </span>
                 </td>
                 <td style={{ padding: '12px 0px' }}>
-                  <span style={{
-                    color: txn.type === 'income' ? 'var(--accent)' : 'var(--red)',
-                    fontWeight: 600,
-                    fontSize: 12,
-                  }}>
+                  <span style={{ color: txn.type === 'income' ? 'var(--accent)' : 'var(--red)', fontWeight: 600, fontSize: 12 }}>
                     {txn.type === 'income' ? '▲' : '▼'} {txn.type}
                   </span>
                 </td>
