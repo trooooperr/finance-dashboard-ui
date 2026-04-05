@@ -41,21 +41,22 @@ Note: All data is mock data stored locally in src/data, so the app works fully o
 	•	Plain CSS — complete control over styling
 	•	localStorage — persist mock data changes during your session
 
-# What I Built.........
+# What I Built
 
 # Dashboard
-
+```
 A quick overview of your finances using mock data:
 	•	Summary Cards — Net balance, total income, and expenses
 	•	Trend Chart (Line Graph) — month-wise income and expense trend
 	•	Category-wise Spending (Donut Chart) — see where your money goes
 	•	Monthly Comparison (Bar Chart) — visualize spending month to month
 	•	Recent Transactions — a list of latest activities
+```
 
 Goal: Understand your financial state within seconds, using only local/mock data.
 
 # Transactions Page
-
+```
 Explore your mock transactions in detail:
 	•	Search instantly by name, amount, or category
 	•	Filter by type (income/expense) and category
@@ -71,11 +72,12 @@ Role Switching (Admin / Viewer)
 Simulates real-world permission changes:
 	•	Admin: Full access (add/edit/delete)
 	•	Viewer: Read-only mode
+```
 
 This demonstrates how the UI adapts based on user roles — even without a backend.
 
 # Insights
-
+```
 Quick analysis based on mock data:
 	•	Top spending categories
 	•	Savings rate
@@ -83,7 +85,7 @@ Quick analysis based on mock data:
 	•	Expense trend over time
 	•	Category-wise spending breakdown
 	•	Monthly comparison
-
+```
 Goal: Make financial data meaningful and readable, without needing a server.
 
 # Design Approach
@@ -123,12 +125,13 @@ Note: All “data” interactions (add/edit/delete) update localStorage, so chan
 	•	Works completely offline with mock data
 
 # Final Thoughts
-
+```
 This dashboard is built like a real product, even without a backend:
 	•	Clean, modern UI
 	•	Readable insights and graphs
 	•	Maintainable, modular code
 	•	Fully functional with mock data
+```
 
 Future improvements: Add backend, authentication, real APIs, or advanced filtering.
 
