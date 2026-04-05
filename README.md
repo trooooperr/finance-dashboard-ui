@@ -138,4 +138,10 @@ Future improvements: Add backend, authentication, real APIs, or advanced filteri
 Thanks for checking out Zorvyn Finance Dashboard!
 
 <img width="400" height="400" alt="image" src="https://github.com/user-attachments/assets/90e548ba-4a98-430e-9917-c72946dfecf2" />
+<img width="400" height="400" alt="image" src="https://github.com/user-attachments/assets/f498a767-b691-4a27-acff-7b351593c1e8" />
+<img width="400" height="400" alt="image" src="https://github.com/user-attachments/assets/e305d41a-b2be-4faf-8991-40229a873e1d" />
+<img width="400" height="400" alt="image" src="https://github.com/user-attachments/assets/39eaa7e7-1270-4417-8e57-f55f5181bdcf" />
+
+
+
 
